@@ -1,0 +1,12 @@
+_io,NumberOfModule,NumberOfCells,CellVoltages,NumberOfTemperatures,AverageBMSTemperature,GroupedCellsTemperatures,Current,Voltage,Power,_RemainingCapacity1,_UserDefinedItems,_TotalCapacity1,CycleNumber,_OptionalFields,RemainingCapacity,TotalCapacity,TotalPower,StateOfCharge,timestamp
+<_io.BytesIO object at 0x000001B7EC6BB970>,2,8,"ListContainer: 
+    3.293
+    3.293
+    3.293
+    3.293
+    3.293
+    3.293
+    3.293
+    3.291",3,23.7,"ListContainer: 
+    20.9
+    21.2",0.0,26.392,0.0,10.753,2,20.885,0,,10.753,20.885,0.0,0.5148671295187933,2025-10-02T16:00:56.871254
