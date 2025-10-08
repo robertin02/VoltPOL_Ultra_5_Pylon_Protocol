@@ -1,6 +1,6 @@
 from setuptools import setup
 
-
+"""
 setup(
     name="python-pylontech",
     version="0.3.3",
@@ -20,3 +20,4 @@ setup(
         "License :: OSI Approved :: MIT License",
     ],
 )
+"""

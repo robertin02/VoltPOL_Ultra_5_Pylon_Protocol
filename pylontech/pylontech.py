@@ -140,7 +140,7 @@ class Pylontech:
         "StateOfCharge" / construct.Computed(construct.this.RemainingCapacity / construct.this.TotalCapacity),
     )
 
-    def __init__(self, serial_port='/dev/ttyUSB0', baudrate=115200):
+    def __init__(self, serial_port="/dev/ttyUSB0", baudrate=115200):
         self.s = serial.Serial(serial_port, baudrate, bytesize=8, parity=serial.PARITY_NONE, stopbits=1, timeout=2, exclusive=True)
 
 
@@ -237,13 +237,13 @@ class Pylontech:
         return batteries
 
 
-    def get_protocol_version(self):
-        self.send_cmd(0, 0x4f)
+    def get_protocol_version(self, dev_id=1):
+        self.send_cmd(dev_id, 0x4f)
         return self.read_frame()
 
 
-    def get_manufacturer_info(self):
-        self.send_cmd(0, 0x51)
+    def get_manufacturer_info(self, dev_id=0):
+        self.send_cmd(dev_id, 0x51)
         f = self.read_frame()
         return self.manufacturer_info_fmt.parse(f.info)
 
@@ -297,12 +297,14 @@ class Pylontech:
         return d
 
 
+
+
 if __name__ == '__main__':
-    p = Pylontech()
+    p = Pylontech(serial_port="COM7", baudrate=9600)
     # print(p.get_protocol_version())
     # print(p.get_manufacturer_info())
     # print(p.get_system_parameters())
     # print(p.get_management_info())
     # print(p.get_module_serial_number())
-    # print(p.get_values())
+    print(p.get_manufacturer_info(2))
     print(p.get_values_single(2))
