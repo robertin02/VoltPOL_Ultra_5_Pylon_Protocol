@@ -1,22 +1,10 @@
 from setuptools import setup
 
-
 setup(
-    name="python-pylontech",
-    version="0.3.3",
-    author="Frank Villaro-Dixon",
-    author_email="frank@villaro-dixon.eu",
-    description=("Interfaces with Pylontech Batteries using RS485 protocol"),
-    license="MIT",
-    keywords="pylontech pylon rs485 lithium battery US2000 US2000C US3000",
-    url="http://github.com/Frankkkkk/python-pylontech",
+    name='Volt_PL_Ultra-5_25.6V_200Ah',
+    author='Chmielarczyk Robert',
+    author_email='chmielar@student.agh.edu.pl',
+    version='0.1',
     packages=['pylontech'],
-    long_description=open("README.md", "r").read(),
-    long_description_content_type="text/markdown",
-    install_requires=['pyserial', 'construct'],
-    classifiers=[
-        "Development Status :: 3 - Alpha",
-        "Topic :: Utilities",
-        "License :: OSI Approved :: MIT License",
-    ],
+    install_requires=['pyserial', 'construct', 'json', 'BytesIO', 'os', 'datetime'],
 )

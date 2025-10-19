@@ -2,25 +2,6 @@ from typing import Dict
 import logging
 import serial
 import construct
-import csv
-from datetime import datetime
-import os
-
-def save_to_file(parsed):
-
-    # Dodaj timestamp do danych
-    parsed["timestamp"] = datetime.now().isoformat()
-
-    # Zapisz do pliku CSV (nagłówki tylko raz)
-    csv_file = "analog_data_log.csv"
-    write_header = not os.path.exists(csv_file)
-
-    with open(csv_file, mode="a", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=parsed.keys())
-        if write_header:
-            writer.writeheader()
-        writer.writerow(parsed)
-    return parsed
 
 logger = logging.getLogger(__name__)
 
@@ -159,7 +140,7 @@ class Pylontech:
         "StateOfCharge" / construct.Computed(construct.this.RemainingCapacity / construct.this.TotalCapacity),
     )
 
-    def __init__(self, serial_port="COM7", baudrate=9600):
+    def __init__(self, serial_port="/dev/ttyUSB0", baudrate=115200):
         self.s = serial.Serial(serial_port, baudrate, bytesize=8, parity=serial.PARITY_NONE, stopbits=1, timeout=2, exclusive=True)
 
 
@@ -282,10 +263,10 @@ class Pylontech:
         self.send_cmd(dev_id, 0x92, bdevid)
         f = self.read_frame()
 
-        print(f.info)
-        print(len(f.info))
+        #print(f.info)
+        #print(len(f.info))
         ff = self.management_info_fmt.parse(f.info[1:])
-        print(ff)
+        #print(ff)
         return ff
 
     def get_module_serial_number(self, dev_id=None):
@@ -319,7 +300,7 @@ class Pylontech:
 
 
 if __name__ == '__main__':
-    p = Pylontech()
+    p = Pylontech(serial_port="COM7", baudrate=9600)
     # print(p.get_protocol_version())
     # print(p.get_manufacturer_info())
     # print(p.get_system_parameters())
@@ -327,4 +308,3 @@ if __name__ == '__main__':
     # print(p.get_module_serial_number())
     print(p.get_manufacturer_info(2))
     print(p.get_values_single(2))
-    save_to_file(p.get_values_single(2))
