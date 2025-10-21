@@ -3,7 +3,7 @@ import json
 from io import BytesIO
 from datetime import datetime
 import os
-import asyncio
+import time
 
 class File: 
     @staticmethod
@@ -34,29 +34,12 @@ class File:
 
         with open(File.path_of_daily_file(filename), "a", encoding="utf-8") as f:
             f.write(json.dumps(wrapped) + "\n")
-
-
-async def main_loop():
-    switch_saving = 1
-    last_second = -1
-    while True:
-                    now = datetime.now()
-                    current_second = now.second
-                    
-                    if current_second!=last_second:
-                        match switch_saving:
-                            case 1:
-                                await File.save_container_as_json(p.get_management_info(2), "management_info")
-                                switch_saving = 2
-                            case 2:
-                                await File.save_container_as_json(p.get_values_single(2), "values_single")
-                                switch_saving = 1
-                            case _:
-                                switch_saving = 1
-                        last_second = current_second
+    
 
 if __name__ == '__main__':
-    with pylontech.Pylontech(serial_port="COM7", baudrate=9600) as p:
+
+    try:
+        p = pylontech.Pylontech(serial_port="COM30", baudrate=9600)
         print("Connection established with Energy storage device ")
         # print(p.get_protocol_version())
         # print(p.get_manufacturer_info())
@@ -64,10 +47,35 @@ if __name__ == '__main__':
         #print(p.get_management_info(2))
         #print(p.get_module_serial_number())
 
-        try:
+    except Exception as e:
+        print("Errror:  ", e)
+
+    try:
             print("Saving data to files ")
             
-            asyncio.run(main_loop())
-
-        except Exception as e:
-            print("Errror:  ", e)
+            switch_saving = 1
+            last_second = -1
+            while True:
+                    
+                    now = datetime.now()
+                    current_second = now.second
+                    
+                    if current_second%5==0:
+                        start = time.time()
+                        #File.save_container_as_json(p.get_management_info(2), "management_info")
+                        #time.sleep(0.1)
+                        #File.save_container_as_json(p.get_values_single(2), "values_single")
+                        match switch_saving:
+                            case 1:
+                                File.save_container_as_json(p.get_management_info(2), "management_info")
+                                switch_saving = 2
+                            case 2:
+                                File.save_container_as_json(p.get_values_single(2), "values_single")
+                                switch_saving = 1
+                            case _:
+                                switch_saving = 1
+                        last_second = current_second
+                        print(f"Total time: {time.time() - start:.2f} seconds")
+                    
+    except Exception as e:
+        print("error in getting data:", e)
